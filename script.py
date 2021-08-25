@@ -20,3 +20,4 @@ driver = webdriver.Chrome(PATH,options=chrome_options)
 
 driver.get("https://www.dayuse.sg/s/singapore/singapore?selectedAddress=Singapore&sluggableAddress=Singapore")
 print(driver.title)
+print(driver.current_url)
