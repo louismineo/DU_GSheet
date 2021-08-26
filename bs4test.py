@@ -60,3 +60,19 @@ df['Avg_$perHr']=""
 print(df)
 
 
+def avgPrice():
+    timeslot_list = []
+#  for i in range(len(df['href'])):
+    url = df['href'][0] #[i]
+    content = requests.get(url,headers=headers)
+    soup = bs4.BeautifulSoup(content.text,'html.parser')
+    print(soup.title.string)
+    timeslots= soup.find_all("div",{"class":re.compile('relative mt-3')})
+    timeslots= [i.get("a")for i in timeslots]
+    print(timeslots)
+      #timeslot_list.append(time_slots.text)
+    #print(timeslot_list)
+
+avgPrice()
+
+    

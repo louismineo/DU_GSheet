@@ -1,0 +1,12 @@
+import re
+import bs4
+import requests
+url = "https://dayuse.sg/s/singapore?selectedAddress=Singapore&sluggableAddress=Singapore"
+content = requests.get(url)
+soup = bs4.BeautifulSoup(content.text,'html.parser')
+
+print(soup.title.string)
+
+test = soup.find_all('href' : re.compile(r"^/hotels/singapore/")})
+#test = soup.find_all('a',href=True)
+print(test)
