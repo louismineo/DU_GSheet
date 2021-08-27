@@ -67,9 +67,17 @@ def avgPrice():
     content = requests.get(url,headers=headers)
     soup = bs4.BeautifulSoup(content.text,'html.parser')
     print(soup.title.string)
-    timeslots= soup.find_all("div",{"class":re.compile('relative mt-3')})
-    timeslots= [i.get("a")for i in timeslots]
+
+    #GET TIME RANGE
+    timeslots = [timeslots.text.strip() for timeslots in soup.find_all('span',"text-2xl py-1 font-light")]
     print(timeslots)
+    #CONVERT TIME RANGE TO TIME AND GET THE DIFFERENCE AKA TIMERANGE IN HOURS
+    import datetime
+    for i in timeslots: datetime.strptime(i,'%I:%M%p')
+    print(timeslots)
+    #GET PRICES
+    prices = [prices.text.strip() for prices in soup.find_all('div',"text-3xl font-extrabold text-right lg:text-left leading-9")]
+    print(prices) 
       #timeslot_list.append(time_slots.text)
     #print(timeslot_list)
 
