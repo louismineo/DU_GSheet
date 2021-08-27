@@ -1,6 +1,8 @@
 import re
 import bs4
 import requests
+
+
 url = "https://dayuse.sg/s/singapore?selectedAddress=Singapore&sluggableAddress=Singapore"
 headers = {'User-Agent':'Mozilla/5.0 (Linux; Android 5.1.1; SM-6928X Build/LMY47X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.83 Mobile Safari/537.36'}
 content = requests.get(url,headers=headers)
@@ -63,7 +65,8 @@ print(df)
 def avgPrice():
     timeslot_list = []
 #  for i in range(len(df['href'])):
-    url = df['href'][0] #[i]
+    #url = df['href'][0] #[i]
+    url = "https://dayuse.sg/hotels/singapore/hotel-nuve-steller"
     content = requests.get(url,headers=headers)
     soup = bs4.BeautifulSoup(content.text,'html.parser')
     print(soup.title.string)
@@ -71,16 +74,22 @@ def avgPrice():
     #GET TIME RANGE
     timeslots = [timeslots.text.strip() for timeslots in soup.find_all('span',"text-2xl py-1 font-light")]
     print(timeslots)
-    #CONVERT TIME RANGE TO TIME AND GET THE DIFFERENCE AKA TIMERANGE IN HOURS
-    import datetime
-    for i in timeslots: datetime.strptime(i,'%I:%M%p')
-    print(timeslots)
     #GET PRICES
     prices = [prices.text.strip() for prices in soup.find_all('div',"text-3xl font-extrabold text-right lg:text-left leading-9")]
-    print(prices) 
-      #timeslot_list.append(time_slots.text)
+    print(prices)
+    #timeslot_list.append(time_slots.text)
     #print(timeslot_list)
 
-avgPrice()
 
+def timerange(string):
+  from datetime import datetime 
+  start=datetime.strptime(string.split(" - ")[0],'%I:%M %p')
+  end = datetime.strptime(string.split(" - ")[1],'%I:%M %p')
+  timediff = end - start
+  timediff = timediff.total_seconds()/3600
+  print(timediff)
+  return timediff
+
+#avgPrice()
+timerange("8:00 AM - 12:00 PM")
     
