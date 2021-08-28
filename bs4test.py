@@ -58,8 +58,26 @@ import pandas as pd
 pd.set_option('display.max_colwidth',None)
 pd.set_option('display.max_rows',None)
 df =pd.DataFrame(links_set,columns=['href'])
-df['Avg_$perHr']=""
+df['timeslots']=""
+df['prices']=""
 print(df)
+
+
+
+for i in range(len(df['href'])):
+  url = df['href'][i]
+  content = requests.get(url,headers=headers)
+  soup = bs4.BeautifulSoup(content.text,'html.parser')
+  #FINDING TIMESLOTS
+  timeslots=[timeslots.text.strip() for timeslots in soup.find_all('span',"text-2xl py-1 font-light")]
+  df['timeslots'][i] = timeslots
+  #FINDING PRICES
+  prices = [prices.text.strip() for prices in soup.find_all('div',"text-3xl font-extrabold text-right lg:text-left leading-9")]
+  df['prices'][i] = prices
+
+print(df)
+
+df.to_csv('df.csv',index=False)
 
 
 def avgPrice():
