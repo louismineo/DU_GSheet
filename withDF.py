@@ -1,3 +1,4 @@
+import ast
 import pandas as pd
 df = pd.read_csv('df.csv')
 df['timeRangeInHrs'] = ""
@@ -30,11 +31,11 @@ def timerange(string):
   end = datetime.strptime(string.split(" - ")[1],'%I:%M %p')
   timediff = end - start
   timediff = timediff.total_seconds()/3600
-  print(timediff)
   return timediff
 
 def getIntegers(string):
-    price = int(filter(str.isdigit, string))
+    import itertools
+    price = int(''.join(itertools.takewhile(lambda s: s.isdigit(), string)))
     return price
 
 
@@ -43,14 +44,18 @@ def getIntegers(string):
 for i in range(len(df)):
     #MAKE LIST OF TIME RANGES
     timerange_list=[]
-    for timeslot in df['timeslots'][i]:
+    for timeslot in ast.literal_eval(df['timeslots'][i]):
         timerange_list.append(timerange(timeslot))
     
+    '''
     #MAKE LIST OF PRICES IN INT W.O THE 'SGD' STRING
     pricesInt_List=[]
-    for prices in df['prices'][i]:
+    for prices in ast.literal_eval(df['prices'][i]):
         pricesInt_List.append(getIntegers(prices))
-    
+    '''
     df['timeRangeInHrs'][i] = timerange_list
-    df['priceInDollars'][i] = pricesInt_List
+    #df['priceInDollars'][i] = pricesInt_List
 
+print(df)
+
+df.to_csv('df.csv',index=False)
