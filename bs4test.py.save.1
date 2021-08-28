@@ -59,35 +59,18 @@ pd.set_option('display.max_colwidth',None)
 pd.set_option('display.max_rows',None)
 df =pd.DataFrame(links_set,columns=['href'])
 df['timeslots']=""
-df['prices']=""
-df['n_timeslots']=""
-df['n_prices']=""
-df['match']=""
 print(df)
 
 
-
+#finding the timeslots
 for i in range(len(df['href'])):
   url = df['href'][i]
   content = requests.get(url,headers=headers)
-  soup = bs4.BeautifulSoup(content.text,'html.parser')
-  #FINDING TIMESLOTS
+  soup = bs4.BeautifulSoup(content.text,'html-parser')
   timeslots=[timeslots.text.strip() for timeslots in soup.find_all('span',"text-2xl py-1 font-light")]
-  df['timeslots'][i] = timeslots
-  df['n_timeslots'][i] = len(timeslots)
-  #FINDING PRICES
-  prices = [prices.text.strip() for prices in soup.find_all('div',"text-3xl font-extrabold text-right lg:text-left leading-9")]
-  df['prices'][i] = prices
-  df['n_prices'][i]= len(prices)
+  df['timeslots'][i] = timeslot
 
-  if len(prices)==len(timeslots):
-    df['match']="Yes"
-  else:
-    df['match']="No"
-  
-print(df)
 
-df.to_csv('df.csv',index=False)
 
 
 def avgPrice():
@@ -109,7 +92,14 @@ def avgPrice():
     #print(timeslot_list)
 
 
-
+def timerange(string):
+  from datetime import datetime 
+  start=datetime.strptime(string.split(" - ")[0],'%I:%M %p')
+  end = datetime.strptime(string.split(" - ")[1],'%I:%M %p')
+  timediff = end - start
+  timediff = timediff.total_seconds()/3600
+  print(timediff)
+  return timediff
 
 #avgPrice()
 timerange("8:00 AM - 12:00 PM")
