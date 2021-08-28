@@ -80,12 +80,13 @@ for i in range(len(df['href'])):
   df['prices'][i] = prices
   df['n_prices'][i]= len(prices)
 
-  if len(prices)==len(timeslots):
-    df['match']="Yes"
-  else:
+  if df['n_timeslots'][i] != df['n_prices'][i]:
     df['match']="No"
+  else:
+    df['match']="Yes"
   
-print(df)
+  
+print(df[["n_timeslots" , "n_prices" , "match" ]])
 
 df.to_csv('df.csv',index=False)
 
