@@ -99,14 +99,7 @@ def avgPrice():
     #print(timeslot_list)
 
 
-def timerange(string):
-  from datetime import datetime 
-  start=datetime.strptime(string.split(" - ")[0],'%I:%M %p')
-  end = datetime.strptime(string.split(" - ")[1],'%I:%M %p')
-  timediff = end - start
-  timediff = timediff.total_seconds()/3600
-  print(timediff)
-  return timediff
+
 
 #avgPrice()
 timerange("8:00 AM - 12:00 PM")
