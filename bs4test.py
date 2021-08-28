@@ -81,9 +81,9 @@ for i in range(len(df['href'])):
   df['n_prices'][i]= len(prices)
 
   if df['n_timeslots'][i] != df['n_prices'][i]:
-    df['match']="No"
+    df['match'][i]="No"
   else:
-    df['match']="Yes"
+    df['match'][i]="Yes"
   
   
 print(df[["n_timeslots" , "n_prices" , "match" ]])
