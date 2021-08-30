@@ -33,9 +33,9 @@ def timerange(string):
   timediff = timediff.total_seconds()/3600
   return timediff
 
-def getIntegers(string):
-    import itertools
-    price = int(''.join(itertools.takewhile(lambda s: s.isdigit(), string)))
+def getFloat(string):
+    import re
+    price = re.findall('[0-9]+',string)
     return price
 
 
@@ -47,15 +47,18 @@ for i in range(len(df)):
     for timeslot in ast.literal_eval(df['timeslots'][i]):
         timerange_list.append(timerange(timeslot))
     
-    '''
+    
     #MAKE LIST OF PRICES IN INT W.O THE 'SGD' STRING
     pricesInt_List=[]
     for prices in ast.literal_eval(df['prices'][i]):
-        pricesInt_List.append(getIntegers(prices))
-    '''
+        pricesInt_List.append(getFloat(prices))
+    
     df['timeRangeInHrs'][i] = timerange_list
-    #df['priceInDollars'][i] = pricesInt_List
+    df['priceInDollars'][i] = pricesInt_List
 
+    #if df['match'] = "Yes":
+      
+      
 print(df)
 
 df.to_csv('df.csv',index=False)
